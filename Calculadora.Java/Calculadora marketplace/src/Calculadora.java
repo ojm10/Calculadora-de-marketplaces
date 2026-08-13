@@ -248,7 +248,7 @@ public class Calculadora {
         painelPrincipal.add(painelCards,    BorderLayout.CENTER);
         painelPrincipal.add(labelVencedor,  BorderLayout.SOUTH);
 
-        JFrame janela = new JFrame("Calculadora Marketplace — Shopee & TikTok Shop");
+        JFrame janela = new JFrame("Marketplace Profit Calculator");
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setContentPane(painelPrincipal);
         janela.pack();
