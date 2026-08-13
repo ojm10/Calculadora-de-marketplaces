@@ -6,6 +6,8 @@ public class Calculadora {
 
     static final Color COR_SHOPEE   = new Color(238, 77, 45);
     static final Color COR_TIKTOK   = new Color(30, 30, 30);
+    static final Color COR_AMAZON   = new Color(46, 204, 113);
+    static final Color COR_MERCADOLIVRE   = new Color(52, 152, 219);
     static final Color COR_VERDE    = new Color(39, 174, 96);
     static final Color COR_VERMELHO = new Color(192, 57, 43);
     static final Color COR_FUNDO    = new Color(245, 245, 245);
@@ -48,6 +50,8 @@ public class Calculadora {
 
         JPanel cardShopee = criarCard(COR_SHOPEE, "🟠  SHOPEE");
         JPanel cardTikTok = criarCard(COR_TIKTOK, "⚫  TIKTOK SHOP");
+        JPanel cardMercadoLivre = criarCard(COR_MERCADOLIVRE, "🔵  MERCADO LIVRE");
+        JPanel cardAmazon = criarCard(COR_AMAZON, "🟢  AMAZON");
 
         JLabel shTaxas    = labelValor("R$ 0,00", COR_VERMELHO);
         JLabel shRepasse  = labelValor("R$ 0,00", Color.DARK_GRAY);
@@ -59,8 +63,20 @@ public class Calculadora {
         JLabel ttLucro    = labelValor("R$ 0,00", COR_VERDE);
         JLabel ttMargem   = labelValor("0,0%",    COR_VERDE);
 
+        JLabel mlTaxas    = labelValor("R$ 0,00", COR_VERMELHO);
+        JLabel mlRepasse  = labelValor("R$ 0,00", Color.DARK_GRAY);
+        JLabel mlLucro    = labelValor("R$ 0,00", COR_VERDE);
+        JLabel mlMargem   = labelValor("0,0%",    COR_VERDE);
+
+        JLabel amTaxas    = labelValor("R$ 0,00", COR_VERMELHO);
+        JLabel amRepasse  = labelValor("R$ 0,00", Color.DARK_GRAY);
+        JLabel amLucro    = labelValor("R$ 0,00", COR_VERDE);
+        JLabel amMargem   = labelValor("0,0%",    COR_VERDE);
+
         preencherCard(cardShopee, shTaxas, shRepasse, shLucro, shMargem);
         preencherCard(cardTikTok, ttTaxas, ttRepasse, ttLucro, ttMargem);
+        preencherCard(cardMercadoLivre, mlTaxas, mlRepasse, mlLucro, mlMargem);
+        preencherCard(cardAmazon, amTaxas, amRepasse, amLucro, amMargem);
 
         JLabel labelVencedor = new JLabel("Preencha os campos e clique em Calcular", SwingConstants.CENTER);
         labelVencedor.setFont(new Font("Arial", Font.BOLD, 14));
@@ -108,6 +124,7 @@ public class Calculadora {
                     pctTikTok        = 0.06;
                     tarifaFixaTikTok = 6.0;
                 }
+
                 
                 double comissaoTikTok  = preco * pctTikTok;
                 double repasseAfiliado = preco * pctAfi;
@@ -115,7 +132,51 @@ public class Calculadora {
                 double repasseTikTok   = preco - totalTaxTikTok;
                 double lucroTikTok     = repasseTikTok - custo;
                 double margemTikTok    = preco > 0 ? (lucroTikTok / preco) * 100 : 0;
+
+
+                double pctMercadoLivre;
+                double tarifaFixaMercadoLivre;
                 
+                if (preco <= 79.99) {
+                    pctMercadoLivre        = 0.20;
+                    tarifaFixaMercadoLivre = 4.0;
+                } else if (preco <= 99.99) {
+                    pctMercadoLivre        = 0.14;
+                    tarifaFixaMercadoLivre = 16.0;
+                } else if (preco <= 199.99) {
+                    pctMercadoLivre        = 0.14;
+                    tarifaFixaMercadoLivre = 20.0;
+                } else {
+                    pctMercadoLivre        = 0.14;
+                    tarifaFixaMercadoLivre = 26.0;
+                }
+                
+                
+                double comissaoMercadoLivre  = preco * pctMercadoLivre;
+                double totalTaxMercadoLivre  = comissaoMercadoLivre + tarifaFixaMercadoLivre + taxaCpf;
+                double repasseMercadoLivre   = preco - totalTaxMercadoLivre;
+                double lucroMercadoLivre     = repasseMercadoLivre - custo;
+                double margemMercadoLivre    = preco > 0 ? (lucroMercadoLivre / preco) * 100 : 0;
+
+                double pctAmazon;
+                double tarifaFixaAmazon;
+                
+                if (preco < 50) {
+                    pctAmazon        = 0.10;
+                    tarifaFixaAmazon = 4.0;
+                } else {
+                    pctAmazon        = 0.06;
+                    tarifaFixaAmazon = 6.0;
+                }
+
+                
+                double comissaoAmazon  = preco * pctAmazon;
+                double totalTaxAmazon  = comissaoAmazon + tarifaFixaAmazon + repasseAfiliado;
+                double repasseAmazon   = preco - totalTaxAmazon;
+                double lucroAmazon     = repasseAmazon - custo;
+                double margemAmazon    = preco > 0 ? (lucroAmazon / preco) * 100 : 0;
+
+
                 shTaxas.setText(  String.format("R$ %.2f", totalTaxShopee));
                 shRepasse.setText( String.format("R$ %.2f", repasseShopee));
                 shLucro.setText(   String.format("R$ %.2f", lucroShopee));
@@ -130,16 +191,39 @@ public class Calculadora {
                 ttLucro.setForeground(lucroTikTok >= 0 ? COR_VERDE : COR_VERMELHO);
                 ttMargem.setForeground(margemTikTok >= 0 ? COR_VERDE : COR_VERMELHO);
                 
-                if (lucroShopee > lucroTikTok) {
+                mlTaxas.setText(   String.format("R$ %.2f", totalTaxMercadoLivre));
+                mlRepasse.setText(  String.format("R$ %.2f", repasseMercadoLivre));
+                mlLucro.setText(    String.format("R$ %.2f", lucroMercadoLivre));
+                mlMargem.setText(   String.format("%.1f%%",  margemMercadoLivre));
+                mlLucro.setForeground(lucroMercadoLivre >= 0 ? COR_VERDE : COR_VERMELHO);
+                mlMargem.setForeground(margemMercadoLivre >= 0 ? COR_VERDE : COR_VERMELHO);
+
+                amTaxas.setText(   String.format("R$ %.2f", totalTaxAmazon));
+                amRepasse.setText(  String.format("R$ %.2f", repasseAmazon));
+                amLucro.setText(    String.format("R$ %.2f", lucroAmazon));
+                amMargem.setText(   String.format("%.1f%%",  margemAmazon));
+                amLucro.setForeground(lucroAmazon >= 0 ? COR_VERDE : COR_VERMELHO);
+                amMargem.setForeground(margemAmazon >= 0 ? COR_VERDE : COR_VERMELHO);
+
+                if (lucroShopee > lucroTikTok && lucroShopee > lucroAmazon && lucroShopee > lucroMercadoLivre) {
                     double diff = lucroShopee - lucroTikTok;
                     labelVencedor.setText(String.format("🏆 Melhor lucro: SHOPEE  (+R$ %.2f)", diff));
                     labelVencedor.setForeground(COR_SHOPEE);
-                } else if (lucroTikTok > lucroShopee) {
+                } else if (lucroTikTok > lucroShopee && lucroTikTok > lucroAmazon && lucroTikTok > lucroMercadoLivre) {
                     double diff = lucroTikTok - lucroShopee;
                     labelVencedor.setText(String.format("🏆 Melhor lucro: TIKTOK SHOP  (+R$ %.2f)", diff));
                     labelVencedor.setForeground(new Color(100, 100, 200));
+                } else if (lucroAmazon > lucroShopee && lucroAmazon > lucroTikTok && lucroAmazon > lucroMercadoLivre) {
+                    double diff = lucroAmazon - lucroShopee;
+                    labelVencedor.setText(String.format("🏆 Melhor lucro: AMAZON  (+R$ %.2f)", diff));
+                    labelVencedor.setForeground(new Color(100, 100, 200));
+                } else if (lucroMercadoLivre > lucroShopee && lucroMercadoLivre > lucroTikTok && lucroMercadoLivre > lucroAmazon) {
+                    double diff = lucroMercadoLivre - lucroShopee;
+                    labelVencedor.setText(String.format("🏆 Melhor lucro: MERCADO LIVRE  (+R$ %.2f)", diff));
+                    labelVencedor.setForeground(new Color(100, 100, 200));
+
                 } else {
-                    labelVencedor.setText("🤝 Lucro igual nas duas plataformas");
+                    labelVencedor.setText("🤝 Lucro igual nas quatro plataformas");
                     labelVencedor.setForeground(new Color(100, 100, 100));
                 }
                 
@@ -150,10 +234,12 @@ public class Calculadora {
             }
         });
 
-        JPanel painelCards = new JPanel(new GridLayout(1, 2, 12, 0));
+        JPanel painelCards = new JPanel(new GridLayout(2, 2, 12, 12));
         painelCards.setBackground(COR_FUNDO);
         painelCards.add(cardShopee);
         painelCards.add(cardTikTok);
+        painelCards.add(cardMercadoLivre);
+        painelCards.add(cardAmazon);
 
         JPanel painelPrincipal = new JPanel(new BorderLayout(0, 12));
         painelPrincipal.setBackground(COR_FUNDO);
