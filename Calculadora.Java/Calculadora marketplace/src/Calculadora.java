@@ -138,16 +138,16 @@ public class Calculadora {
                 double tarifaFixaMercadoLivre;
                 
                 if (preco <= 79.99) {
-                    pctMercadoLivre        = 0.20;
+                    pctMercadoLivre        = 0.22;
                     tarifaFixaMercadoLivre = 4.0;
                 } else if (preco <= 99.99) {
-                    pctMercadoLivre        = 0.14;
+                    pctMercadoLivre        = 0.16;
                     tarifaFixaMercadoLivre = 16.0;
                 } else if (preco <= 199.99) {
-                    pctMercadoLivre        = 0.14;
+                    pctMercadoLivre        = 0.16;
                     tarifaFixaMercadoLivre = 20.0;
                 } else {
-                    pctMercadoLivre        = 0.14;
+                    pctMercadoLivre        = 0.16;
                     tarifaFixaMercadoLivre = 26.0;
                 }
                 
@@ -162,10 +162,10 @@ public class Calculadora {
                 double tarifaFixaAmazon;
                 
                 if (preco < 50) {
-                    pctAmazon        = 0.10;
+                    pctAmazon        = 0.12;
                     tarifaFixaAmazon = 4.0;
                 } else {
-                    pctAmazon        = 0.06;
+                    pctAmazon        = 0.08;
                     tarifaFixaAmazon = 6.0;
                 }
 
@@ -205,25 +205,25 @@ public class Calculadora {
                 amLucro.setForeground(lucroAmazon >= 0 ? COR_VERDE : COR_VERMELHO);
                 amMargem.setForeground(margemAmazon >= 0 ? COR_VERDE : COR_VERMELHO);
 
-                if (lucroShopee > lucroTikTok && lucroShopee > lucroAmazon && lucroShopee > lucroMercadoLivre) {
+                if ((lucroShopee > lucroTikTok) && (lucroShopee > lucroAmazon) && (lucroShopee > lucroMercadoLivre)) {
                     double diff = lucroShopee - lucroTikTok;
                     labelVencedor.setText(String.format("🏆 Melhor lucro: SHOPEE  (+R$ %.2f)", diff));
                     labelVencedor.setForeground(COR_SHOPEE);
-                } else if (lucroTikTok > lucroShopee && lucroTikTok > lucroAmazon && lucroTikTok > lucroMercadoLivre) {
+                } else if ((lucroTikTok > lucroShopee) && (lucroTikTok > lucroAmazon) && (lucroTikTok > lucroMercadoLivre)) {
                     double diff = lucroTikTok - lucroShopee;
                     labelVencedor.setText(String.format("🏆 Melhor lucro: TIKTOK SHOP  (+R$ %.2f)", diff));
                     labelVencedor.setForeground(new Color(100, 100, 200));
-                } else if (lucroAmazon > lucroShopee && lucroAmazon > lucroTikTok && lucroAmazon > lucroMercadoLivre) {
+                } else if ((lucroAmazon > lucroShopee) && (lucroAmazon > lucroTikTok) && (lucroAmazon > lucroMercadoLivre)) {
                     double diff = lucroAmazon - lucroShopee;
                     labelVencedor.setText(String.format("🏆 Melhor lucro: AMAZON  (+R$ %.2f)", diff));
                     labelVencedor.setForeground(new Color(100, 100, 200));
-                } else if (lucroMercadoLivre > lucroShopee && lucroMercadoLivre > lucroTikTok && lucroMercadoLivre > lucroAmazon) {
+                } else if ((lucroMercadoLivre > lucroShopee) && (lucroMercadoLivre > lucroTikTok) && (lucroMercadoLivre > lucroAmazon)) {
                     double diff = lucroMercadoLivre - lucroShopee;
                     labelVencedor.setText(String.format("🏆 Melhor lucro: MERCADO LIVRE  (+R$ %.2f)", diff));
                     labelVencedor.setForeground(new Color(100, 100, 200));
 
                 } else {
-                    labelVencedor.setText("🤝 Lucro igual nas quatro plataformas");
+                    labelVencedor.setText("🤝 Lucro igual nas plataformas");
                     labelVencedor.setForeground(new Color(100, 100, 100));
                 }
                 
